@@ -146,7 +146,7 @@ class UserController extends Controller
 
     public function AddDeliveryAddress(Request $request)
     {
-        try{
+        // try{
             $id = Auth::guard('api')->user()->id;
             $data = new DeliveryAddress();
             $data->user_id = $id;
@@ -167,11 +167,11 @@ class UserController extends Controller
             return response()->json([
                 "success" => "Address Added Successfully"
             ], 200);
-        } catch (\Exception $e) {
-            return response()->json([
-                "error" => "Something Error"
-            ], 400);
-        }
+        // } catch (\Exception $e) {
+        //     return response()->json([
+        //         "error" => "Something Error"
+        //     ], 400);
+        // }
     }
 
     public function UpdateDeliveryAddress(Request $request)

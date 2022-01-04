@@ -24,6 +24,7 @@ Route::group(['middleware' => 'auth:api'],function(){
 });
 Route::get('all_cat_sub_chid', 'CategoryController@getCatSubChildCategory');
 Route::resource('category','CategoryController');
+Route::post('category_update','CategoryController@categoryUpdate');
 //product cart 
 Route::post('product/get_products_cart', 'CartController@GetProductsCart');
 Route::post('product/update_products_cart', 'CartController@UpdateProductsCart');
@@ -36,3 +37,8 @@ Route::get('get_delivery_addresses', 'UserController@GetDeliveryAddresses');
 Route::post('update_delivery_address', 'UserController@UpdateDeliveryAddress');
 Route::post('add_delivery_address', 'UserController@AddDeliveryAddress');
 Route::post('delete_delivery_address', 'UserController@DeleteDeliveryAddress');
+
+Route::post('add_order', 'OrderController@AddOrder')->name('add_order');
+Route::get('get_orders', 'OrderController@getOrders')->name('get_orders');
+Route::get('get_user_orders', 'OrderController@getUserOrders')->name('get_user_orders');
+Route::post('order/accept', 'OrderController@acceptOrder');

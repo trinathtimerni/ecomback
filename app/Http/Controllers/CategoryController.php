@@ -41,7 +41,18 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        try {
+            $category = new Category();
+            $category->name = $request->name;
+            $category->description = $request->description;
+            $category->save();
+
+            return response()->json(['success' => 1, 'message' => "category save successfully", 'category' => $category], 200);
+        } catch (\Exception $e) {
+            $category->delete();
+
+            return response()->json(['success' => 0, 'message' => $e->getMessage()], 500);
+        }
     }
 
     /**
@@ -52,7 +63,9 @@ class CategoryController extends Controller
      */
     public function show($id)
     {
-        //
+        $category = Category::findOrFail($id);
+
+        return response()->json(['category' => $category], 200);
     }
 
     /**
@@ -66,6 +79,20 @@ class CategoryController extends Controller
         //
     }
 
+    public function categoryUpdate(Request $request)
+    {
+        try {
+            $category = Category::find($request->id);
+            $category->name = $request->name;
+            $category->description = $request->description;
+            $category->save();
+
+            return response()->json(['success' => 1, 'message' => "category update successfully", 'category' => $category], 200);
+        } catch (\Exception $e) {
+            return response()->json(['success' => 0, 'message' => $e->getMessage()], 500);
+        }
+    }
+
     /**
      * Update the specified resource in storage.
      *
@@ -75,7 +102,18 @@ class CategoryController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        try {
+            $category = Category::find($request->id);
+            $category->name = $request->name;
+            $category->description = $request->description;
+            $category->save();
+
+            return response()->json(['success' => 1, 'message' => "category update successfully", 'category' => $category], 200);
+        } catch (\Exception $e) {
+            $category->delete();
+
+            return response()->json(['success' => 0, 'message' => $e->getMessage()], 500);
+        }
     }
 
     /**
@@ -86,7 +124,8 @@ class CategoryController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Category::find($id)->delete();
+        return response()->json(['success' => 1,'message' => 'category deleted successfully'], 200);
     }
 
     public function getCatSubChildCategory(){

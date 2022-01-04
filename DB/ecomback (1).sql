@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 04, 2022 at 05:56 AM
+-- Generation Time: Jan 04, 2022 at 09:49 PM
 -- Server version: 10.4.11-MariaDB
 -- PHP Version: 7.4.1
 
@@ -58,13 +58,6 @@ CREATE TABLE `carts` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
---
--- Dumping data for table `carts`
---
-
-INSERT INTO `carts` (`id`, `user_id`, `guest_id`, `product_id`, `quantity`, `price`, `shipping_cost`, `created_at`, `updated_at`) VALUES
-(3, 3, 'null', 5, 1.00, 200, NULL, '2022-01-03 22:14:37', '2022-01-03 22:34:59');
-
 -- --------------------------------------------------------
 
 --
@@ -115,6 +108,39 @@ CREATE TABLE `child_categories` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `delivery_addresses`
+--
+
+CREATE TABLE `delivery_addresses` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `user_id` bigint(20) UNSIGNED NOT NULL,
+  `first_name` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `last_name` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `email` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `title` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `country_code` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `phone` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `country` int(11) DEFAULT NULL,
+  `address` text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `address1` text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `house_no` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `city` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `post_code` int(11) DEFAULT NULL,
+  `status` tinyint(4) NOT NULL DEFAULT 0,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `delivery_addresses`
+--
+
+INSERT INTO `delivery_addresses` (`id`, `user_id`, `first_name`, `last_name`, `email`, `title`, `country_code`, `phone`, `country`, `address`, `address1`, `house_no`, `city`, `post_code`, `status`, `created_at`, `updated_at`) VALUES
+(2, 3, 'Anuvob', 'Saha', 'anuvobsaha2@gmail.com', 'mr.', NULL, '01620621910', NULL, 'ibrahimpur', NULL, NULL, NULL, NULL, 0, '2022-01-04 11:09:40', '2022-01-04 11:09:40');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `failed_jobs`
 --
 
@@ -156,7 +182,8 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (23, '2021_12_29_192300_create_products_table', 1),
 (24, '2021_12_29_192358_create_orders_table', 1),
 (25, '2021_12_29_192459_create_order_details_table', 1),
-(26, '2021_12_29_193157_create_carts_table', 1);
+(26, '2021_12_29_193157_create_carts_table', 1),
+(28, '2022_01_04_044629_create_delivery_addresses_table', 2);
 
 -- --------------------------------------------------------
 
@@ -185,6 +212,13 @@ CREATE TABLE `orders` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Dumping data for table `orders`
+--
+
+INSERT INTO `orders` (`id`, `user_id`, `guest_id`, `order_id`, `shipping_address`, `total`, `discount`, `payment_status`, `payment_type`, `payment_details`, `code`, `date`, `viewed`, `delivery_status_viewed`, `payment_status_viewed`, `status`, `created_at`, `updated_at`) VALUES
+(3, 3, NULL, 'OPIsA0', NULL, 200, 0, 'unpaid', 'paypal', NULL, NULL, '2004-01-22', 0, 0, 0, 5, '2022-01-04 11:24:42', '2022-01-04 14:46:00');
+
 -- --------------------------------------------------------
 
 --
@@ -207,6 +241,13 @@ CREATE TABLE `order_details` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `order_details`
+--
+
+INSERT INTO `order_details` (`id`, `order_id`, `product_id`, `price`, `tax`, `quantity`, `shipping_cost`, `payment_status`, `delivery_status`, `shipping_type`, `product_referal_code`, `status`, `created_at`, `updated_at`) VALUES
+(1, 3, 3, 200.00, 0.00, 1, NULL, 'unpaid', 'pending', NULL, NULL, '0', '2022-01-04 11:24:42', '2022-01-04 11:24:42');
 
 -- --------------------------------------------------------
 
@@ -320,7 +361,8 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `name`, `email`, `phone`, `user_type`, `email_verified_at`, `password`, `remember_token`, `created_at`, `updated_at`) VALUES
-(3, 'admin', 'admin@gmail.com', '01751867845', '1', NULL, '$2y$10$126ypfl8c6AvX61E3Fx3Z.6JyGfyRJbbUNWVx.4TyYpFUNw5TaSFK', NULL, '2021-12-31 12:34:45', '2021-12-31 12:34:45');
+(3, 'admin', 'admin@gmail.com', '01751867845', '1', NULL, '$2y$10$126ypfl8c6AvX61E3Fx3Z.6JyGfyRJbbUNWVx.4TyYpFUNw5TaSFK', NULL, '2021-12-31 12:34:45', '2021-12-31 12:34:45'),
+(4, 'Trinath Saha', 'trinathsaha2@gmail.com', '01620621910', '2', NULL, '$2y$10$DLsbRLs/zuqk9pp1OK1w/O5q1yyzujxRHUwmtmvd7.de30Vh.U7zu', NULL, '2022-01-04 13:56:22', '2022-01-04 13:56:22');
 
 --
 -- Indexes for dumped tables
@@ -351,6 +393,12 @@ ALTER TABLE `categories`
 ALTER TABLE `child_categories`
   ADD PRIMARY KEY (`id`),
   ADD KEY `child_categories_subcategory_id_foreign` (`subcategory_id`);
+
+--
+-- Indexes for table `delivery_addresses`
+--
+ALTER TABLE `delivery_addresses`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `failed_jobs`
@@ -436,13 +484,19 @@ ALTER TABLE `carts`
 -- AUTO_INCREMENT for table `categories`
 --
 ALTER TABLE `categories`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `child_categories`
 --
 ALTER TABLE `child_categories`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `delivery_addresses`
+--
+ALTER TABLE `delivery_addresses`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `failed_jobs`
@@ -454,19 +508,19 @@ ALTER TABLE `failed_jobs`
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
 
 --
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `order_details`
 --
 ALTER TABLE `order_details`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `personal_access_tokens`
@@ -490,7 +544,7 @@ ALTER TABLE `sub_categories`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- Constraints for dumped tables

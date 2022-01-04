@@ -20,7 +20,7 @@ class CreateDeliveryAddressesTable extends Migration
             $table->string("last_name",191);
             $table->string("email",191);
             $table->string("title",191)->nullable();
-            $table->string("country_code",191);
+            $table->string("country_code",191)->nullable();
             $table->string("phone",20);
             $table->integer("country")->nullable();
             $table->text("address")->nullable();
