@@ -26,9 +26,9 @@ class CreateProductsTable extends Migration
             $table->string('main_image');
             $table->double('price');
             $table->string('unit_id')->nullable();
-            $table->double('previous_price');
+            $table->double('previous_price')->nullable();
             $table->double('quantity');
-            $table->integer('review')->max(5);
+            $table->integer('review')->max(5)->nullable();
             $table->double('discount')->default(0)->nullable();
             $table->text('colors')->nullable();
             $table->integer('number_of_sale')->nullable();

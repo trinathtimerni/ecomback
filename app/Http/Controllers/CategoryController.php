@@ -14,7 +14,13 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        //
+        try {
+            $categories = Category::orderBy('id', 'DESC')->paginate(15);
+        return response()->json(['categories' => $categories], 200);
+        }
+        catch (\Exception $e) {
+            return response()->json(["error" => "something error occured"],500);
+        }
     }
 
     /**

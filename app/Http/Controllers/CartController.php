@@ -12,19 +12,55 @@ class CartController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function GetProductsCart(Request $request)
     {
-        try {
+        // try {
             if($request->user_id != null){
                 $carts = Cart::orderby("id","desc")->where("user_id",$request->user_id)->with('product')->get();
             }
             else if($request->guest_id != null){
-                $carts = Cart::orderby("id","desc")->where("guset_id",$request->guest_id)->with('product')->get();
+                $carts = Cart::orderby("id","desc")->where("guest_id",$request->guest_id)->with('product')->get();
             }
             else{
                 $carts = [];
             }
                 return response()->json($carts);
+        // }
+        // catch (\Exception $e) {
+        //     return response()->json([
+        //         "error" => "Something Error"
+        //     ], 400);
+        // }
+    }
+    public function AddProductsCart(Request $request)
+    {
+            try {
+                Cart::create([
+                    'user_id' => $request->user_id,
+                    'guest_id' => $request->guest_id,   
+                    'product_id' => $request->product_id,
+                    'quantity' => $request->quantity,                    
+                    'price' => $request->price,
+                ]);
+                $message = "success";
+                return response()->json($message);
+            }
+            catch (\Exception $e) {
+                return response()->json([
+                    "error" => "Something Error"
+                ], 400);
+            }
+    }
+    public function UpdateProductsCart(Request $request)
+    {
+        try {
+            $cart = Array();
+            $cart['quantity'] = $request->quantity;
+            $cart['product_id'] = $request->product_id;
+            $cart['price'] = $request->price;
+            Cart::where('id',$request->cart_id)->update($cart);
+            $message = "success";
+            return response()->json($message);
         }
         catch (\Exception $e) {
             return response()->json([
@@ -32,70 +68,17 @@ class CartController extends Controller
             ], 400);
         }
     }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function DeleteProductsCart(Request $request)
     {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
+        try {
+                Cart::where('id',$request->cart_id)->delete();
+                $message = "success";
+                return response()->json($message);
+        }
+        catch (\Exception $e) {
+            return response()->json([
+                "error" => "Something Error"
+            ], 400);
+        }
     }
 }

@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
 use App\Models\Cart;
+use App\Models\DeliveryAddress;
+use App\Models\Order;
 use App\Models\User;
 use Illuminate\Http\Request;
 use DB;
@@ -123,6 +125,111 @@ class UserController extends Controller
             'token_type' => 'bearer',
             'expires_in' => auth('api')->factory()->getTTL() * 60
         ]);
+    }
+
+    public function DeleteDeliveryAddress(Request $request)
+    {
+        try{
+            $address_id = $request->address_id;
+            $address = DeliveryAddress::where('id', $address_id)->first();
+            $address->delete();
+            return response()->json([
+                "success" => "Address Deleted Successfully"
+            ], 200);
+        }catch (\Exception $e) {
+            return response()->json([
+                "error" => "Something Error"
+            ], 400);
+        }
+
+    }
+
+    public function AddDeliveryAddress(Request $request)
+    {
+        try{
+            $id = Auth::guard('api')->user()->id;
+            $data = new DeliveryAddress();
+            $data->user_id = $id;
+            $data->title = $request->title;
+            $data->first_name = $request->first_name;
+            $data->last_name = $request->last_name;
+            $data->email = $request->email;
+            $data->country_code = $request->country_code;
+            $data->phone = $request->phone;
+            $data->country = $request->country;
+            $data->house_no = $request->house_no;
+            $data->city = $request->city;
+            $data->post_code = $request->post_code;
+            $data->address1 = $request->address1;
+            $data->address = $request->address;
+            $data->save();
+            DB::commit();
+            return response()->json([
+                "success" => "Address Added Successfully"
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                "error" => "Something Error"
+            ], 400);
+        }
+    }
+
+    public function UpdateDeliveryAddress(Request $request)
+    {
+        try{
+            $id = Auth::guard('api')->user()->id;
+            $data = DeliveryAddress::findOrFail($request->address_id);
+            $data->user_id = $id;
+            $data->title = $request->title;
+            $data->first_name = $request->first_name;
+            $data->last_name = $request->last_name;
+            $data->email = $request->email;
+            $data->country_code = $request->country_code;
+            $data->phone = $request->phone;
+            $data->country = $request->country;
+            $data->house_no = $request->house_no;
+            $data->city = $request->city;
+            $data->post_code = $request->post_code;
+            $data->address1 = $request->address1;
+            $data->address = $request->address;
+            $data->save();
+            DB::commit();
+            return response()->json([
+                "success" => "Address Added Successfully"
+            ],200);
+        } catch (\Exception $e) {
+            return response()->json([
+                "error" => "Something Error"
+            ], 400);
+        }
+    }
+
+    public function GetDeliveryAddresses(Request $request)
+    {
+        try{
+            $id = Auth::guard('api')->user()->id;
+            $data = DeliveryAddress::where('user_id',$id)->orderby("id","desc")->get();
+            
+            return response()->json($data);
+        } catch (\Exception $e) {
+            return response()->json([
+                "error" => "Something Error"
+            ], 400);
+        }
+    }
+
+    public function GetOrderList()
+    {
+        try{
+            $id = Auth::guard('api')->user()->id;
+            $order_info = Order::where('user_id', $id)->orderBy('id', 'desc')->get();
+            return response()->json($order_info);
+        }
+        catch (\Exception $e) {
+            return response()->json([
+                "error" => "Something Error"
+            ], 400);
+        }
     }
 
 }
